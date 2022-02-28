@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+<!-- Title -->
+{% block title %} Task Detail {% endblock %}
+
+<!-- Content -->
+{% block content %}
+<div class="max-w-md w-full">
+  <h2 class="mt-6 text-4xl font-bold text-gray-900 text-center">
+    {{ object.title }}
+  </h2>
+  <br />
+  <div class="flex justify-center">
+    <div>
+      <h2 class="mt-6 text-xl font-bold text-gray-900">Description</h2>
+      <p class="text-center">{{ object.description }}</p>
+    </div>
+  </div>
+  <div class="flex justify-between">
+    <div>
+      <h2 class="mt-6 text-xl font-bold text-gray-900">Priority</h2>
+      <p>{{ object.priority }}</p>
+    </div>
+    <br />
+    <div>
+      <h2 class="mt-6 text-xl font-bold text-gray-900">Status</h2>
+      {% if object.completed %}
+      <p>Completed</p>
+      {% else %}
+      <p>Pending</p>
+      {% endif %}
+    </div>
+    <br />
+    <div>
+      <h2 class="mt-6 text-xl font-bold text-gray-900">Created</h2>
+      <p>{{ object.created_date|date:"D d M" }}</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

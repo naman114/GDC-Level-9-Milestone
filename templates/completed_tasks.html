@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+<!-- Title -->
+{% block title %} Completed Tasks {% endblock %}
+
+<!-- Content -->
+{% block content %}
+<div class="max-w-md w-full space-y-6">
+  <div class="flex justify-between">
+    <h2 class="mt-6 text-4xl font-bold text-gray-900">Hi {{ request.user }}</h2>
+    <div class="flex flex-col justify-end">
+      <h2 class="mt-6 mr-2 text-xl text-red-500 hover:cursor-pointer">
+        <a href="/user/logout">Log out</a>
+      </h2>
+      <a href="/update-email-pref/{{ user.id }}" class="flex justify-end">
+        <div class="w-10 h-10 mx-2 flex justify-end items-end rounded-md">
+          <span
+            class="iconify w-6 h-6"
+            data-icon="eva:settings-2-outline"
+          ></span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <h3>
+    {{ completed_tasks_count }} of {{ total_tasks_count }} tasks completed
+  </h3>
+  <div class="flex justify-evenly">
+    <h2 class="text-lg hover:cursor-pointer px-5 py-1">
+      <a href="/all_tasks">All</a>
+    </h2>
+    <h2 class="text-lg hover:cursor-pointer px-5 py-1">
+      <a href="/tasks">Pending</a>
+    </h2>
+    <h2
+      class="text-lg hover:cursor-pointer px-5 py-1 text-red-500 bg-red-100 rounded-3xl"
+    >
+      <a href="/completed_tasks">Completed</a>
+    </h2>
+  </div>
+
+  <form action="" method="get" class="flex justify-center">
+    <input
+      class="bg-slate-100 w-64 p-3 mr-4 rounded-2xl focus:outline-none"
+      type="text"
+      name="search"
+      placeholder="Enter task to search"
+    />
+    <input
+      class="border-2 border-red-500 rounded-md px-2 py-1 flex justify-center w-min hover:cursor-pointer"
+      type="submit"
+      value="Search"
+    />
+  </form>
+
+  {% if not tasks.count %}
+  <p class="text-center">Task list is empty!</p>
+  {% endif %}
+
+  <div class="flex flex-col">
+    {% for task in tasks %}
+    <div
+      class="flex justify-between bg-slate-100 p-5 rounded-2xl mb-2 hover:cursor-pointer hover:bg-slate-200"
+    >
+      <div>
+        <a href="/detail-task/{{ task.id }}">
+          <h3>{{ task.title }}</h3>
+          <h3 class="text-slate-500">{{ task.created_date|date:"D d M" }}</h3>
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if is_paginated %}
+
+  <div class="flex justify-center">
+    {% if page_obj.has_previous %}
+    <div class="flex items-center mr-2">
+      <a
+        href="?page={{ page_obj.previous_page_number }}&search={{request.GET.search}}"
+      >
+        <span
+          class="iconify text-red-500 h-5 w-5"
+          data-icon="bxs:left-arrow"
+        ></span>
+      </a>
+    </div>
+    {% else %}
+    <div class="flex items-center mr-2">
+      <span
+        class="iconify text-slate-500 h-5 w-5"
+        data-icon="bxs:left-arrow"
+      ></span>
+    </div>
+    {% endif %}
+    <div
+      class="border-2 border-red-500 rounded-md px-2 py-1 flex justify-center w-min"
+    >
+      {{ page_obj.number }}
+    </div>
+    {% if page_obj.has_next %}
+    <div class="flex items-center ml-2">
+      <a
+        href="?page={{ page_obj.next_page_number }}&search={{request.GET.search}}"
+      >
+        <span
+          class="iconify text-red-500 h-5 w-5"
+          data-icon="bxs:right-arrow"
+        ></span>
+      </a>
+    </div>
+    {% else %}
+    <div class="flex items-center ml-2">
+      <span
+        class="iconify text-slate-500 h-5 w-5"
+        data-icon="bxs:right-arrow"
+      ></span>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <a href="/create-task">
+    <div
+      class="mt-8 group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+    >
+      Add
+    </div>
+  </a>
+</div>
+<script src="https://code.iconify.design/2/2.1.2/iconify.min.js"></script>
+{% endblock %}
