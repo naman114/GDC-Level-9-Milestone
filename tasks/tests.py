@@ -1,5 +1,4 @@
 from datetime import datetime
-from tabnanny import check
 from django.contrib.auth.models import User
 from django.test import RequestFactory, TestCase
 
@@ -30,13 +29,9 @@ class AuthenticationTests(TestCase):
         self.assertEqual(response.url, "/user/login?next=/tasks/")
 
     def test_authenticated_user(self):
-        # Create an instance of a GET request.
         request = self.factory.get("/tasks")
-        # Set the user instance on the request.
         request.user = self.user
-        # We simply create the view and call it like a regular function
         response = GenericTaskView.as_view()(request)
-        # Since we are authenticated we get a 200 response
         self.assertEqual(response.status_code, 200)
 
 
@@ -125,18 +120,6 @@ class EmailPreferencesTests(TestSetupManager):
             EmailPreferences.objects.filter(user=self.user).first().selected_email_hour,
             0,
         )
-
-
-# priority, generic taskview, comp, all, detail (auth + auth)
-# create -> length, check create ho rha hai ki nahi
-# update -> apna hi
-# delete -> apna hi
-#  mark as complete -> apna hi
-
-# Task api: auth + autho
-# Task history: ban rhe hain ki nahi + auth + autho
-
-# celery tests
 
 
 class ApiViewsTests(TestCase):
